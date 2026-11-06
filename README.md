@@ -135,13 +135,22 @@ src/main/resources/seed/   The provided dataset
 
 ## How I worked with AI
 
-I used **Claude Code** throughout, and the commits it helped write are marked `Co-Authored-By: Claude`.
+I used **Claude Code** as a collaborator throughout. Commits it helped write are marked
+`Co-Authored-By: Claude`.
 
-- **Understanding the data:** it profiled the dataset with me and surfaced issues the README doesn't
-  mention. For example, Circle #21 reports chat messages in the last 30 days but a last activity
-  ~7 months ago, Circle #17 lists one tag twice, and tags and post text are mostly random.
-- **Making decisions:** for each design question (filters, ranking, duplicates, cold start, schema,
-  indexes), I had it lay out the options and tradeoffs, checked each against the planted users, and
-  made the call myself. Those decisions and their rationale are in [docs/DESIGN.md](docs/DESIGN.md).
-- **Building:** once the plan was fixed, Claude implemented it step by step. Each step was verified
-  for real (tests, `docker compose up`, calling the API for all 100 users) before being committed.
+**Understanding before building.** Before writing any code, I had Claude help me analyze the dataset
+and the generator script. That surfaced things the README doesn't say, and they shaped the design:
+- User 15 is also interested in `confidence`, so a good list mixes one negotiation Circle with
+  confidence Circles.
+- Circle #21 reports chat messages in the last 30 days but a last activity ~7 months ago, so I based
+  "inactive" on feed posts, the signal I could verify against the posts table.
+- Tags and post text are mostly random, so I don't rank on them.
+
+**I made the decisions.** For each design question (filters, ranking, duplicates, cold start, schema,
+indexes), I asked for the options and tradeoffs, plus a recommendation where I wanted one. I checked
+them against the four planted users and made the call. For example, I chose sorting in steps over a
+weighted score, so every rank is explainable. The decisions went into a written plan that I reviewed
+and approved before any code.
+
+**Building and verifying.** I implemented it with Claude, and verified and validated all files: the
+tests, `docker compose up`, the API called for all 100 users, and a fresh clone from GitHub.
