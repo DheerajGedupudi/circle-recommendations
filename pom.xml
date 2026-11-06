@@ -11,21 +11,8 @@
 	<groupId>com.dheeraj</groupId>
 	<artifactId>circle-recommendations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<name>circle-recommendations</name>
+	<description>API that recommends Lean In Circles for a member to join, with a member-facing reason for each.</description>
 	<properties>
 		<java.version>25</java.version>
 	</properties>
