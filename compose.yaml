@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:18   # same version as the Testcontainers tests
+    environment:
+      POSTGRES_DB: circles
+      POSTGRES_USER: circles
+      POSTGRES_PASSWORD: circles   # local-only credentials
+    ports:
+      - "5433:5432"   # 5433 on your machine, so it can't clash with a Postgres you already run
+    healthcheck:
+      # -h localhost checks over TCP, so it only reports ready once Postgres
+      # has finished its first-time setup and accepts real connections.
+      test: ["CMD-SHELL", "pg_isready -h localhost -U circles -d circles"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    environment:
+      # Inside Compose the database is reachable by its service name, "db".
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/circles
+      SPRING_DATASOURCE_USERNAME: circles
+      SPRING_DATASOURCE_PASSWORD: circles
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy   # wait until Postgres is ready, or Flyway fails at startup
